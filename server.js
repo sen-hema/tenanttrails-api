@@ -31,8 +31,10 @@ app.get("/api/protected-test", auth, (req, res) => {
   res.json({ message: "You're authenticated", user: req.user });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`API on http://localhost:${process.env.PORT || 3000}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(process.env.PORT || 3000, () => {
+    console.log(`API on http://localhost:${process.env.PORT || 3000}`);
+  });
+}
 
 export default app;
