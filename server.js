@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.js";
 import { auth } from "./middleware/auth.js";
 import apartmentRoutes from "./routes/apartments.js";
 import reviewRoutes from "./routes/reviews.js";
+import uploadRoutes from "./routes/upload.js";
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/apartments", apartmentRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/upload", uploadRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
