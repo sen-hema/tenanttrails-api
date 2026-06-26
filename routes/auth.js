@@ -40,5 +40,25 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+// GET /api/auth/me — logged-in user + their reviews
+router.get("/me", auth, async (req, res) => {
+  try {
+    const [[user]] = await pool.query(
+      "SELECT id, name, email, initials FROM users WHERE id = ?",
+      [req.user.id]
+    );
+    const [reviews] = await pool.query(
+      `SELECT r.id, r.apt_id AS aptId, r.rating, r.body, 
+              r.created AS date, a.name AS aptName
+       FROM reviews r
+       JOIN apartments a ON a.id = r.apt_id
+       WHERE r.user_id = ?`,
+      [req.user.id]
+    );
+    res.json({ ...user, reviews });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;
